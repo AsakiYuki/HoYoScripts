@@ -32,7 +32,7 @@ export class HTTPRequest {
      * Get the DS
      * @returns {string} The DS
      */
-    getDs() {
+    static getDs() {
         // Get the current time in seconds
         const t = Math.floor(Date.now() / 1000);
 
@@ -80,6 +80,17 @@ export class HTTPRequest {
         url: string,
         options?: HTTPRequestInit
     ): Promise<HTTPResponse<T> | null> {
+        const response = await this.rawFetch(url, options);
+
+        try {
+            return response.json();
+        } catch (error) {
+            console.error("\0x1b[31m[ERROR]\0x1b[0m", error);
+            return null;
+        }
+    }
+
+    async rawFetch(url: string, options?: HTTPRequestInit) {
         // Create a new URL with the searchParams
         const URL = this.buildURL(url, options?.searchParams);
         delete options?.searchParams;
@@ -91,7 +102,7 @@ export class HTTPRequest {
 
         // Add the DS to the headers
         if (options?.security) {
-            headers["DS"] = this.getDs();
+            headers["DS"] = HTTPRequest.getDs();
 
             delete options?.security;
         }
@@ -107,16 +118,9 @@ export class HTTPRequest {
         }
 
         // Send the request
-        const response = await fetch(URL, {
+        return await fetch(URL, {
             ...(<RequestInit>options),
             headers: headers,
         });
-
-        try {
-            return response.json();
-        } catch (error) {
-            console.error("\0x1b[31m[ERROR]\0x1b[0m", error);
-            return null;
-        }
     }
 }
