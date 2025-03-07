@@ -1,6 +1,6 @@
 export interface HTTPRequestInit extends Omit<RequestInit, "body"> {
     body?: object;
-    searchParams?: Record<string, string | number | boolean>;
+    searchParams?: any;
     security?: boolean;
     cookie?: boolean;
 }

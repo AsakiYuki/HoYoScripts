@@ -1,8 +1,11 @@
-import { Database } from "./lib/database";
+import { HoYoLab } from "./lib/hoyolab";
 import Secret from "./utils/secret";
 
-(async () => {
-    const webhook = new Database(Secret.database.api, Secret.database.key);
+async function main() {
+    const hoyolab = new HoYoLab(Secret.cookies[0]);
+    const info = await hoyolab.getGameRecordCards();
 
-    const test = await webhook.deleteDatabase("TEST");
-})();
+    console.log(JSON.stringify(info, null, 2));
+}
+
+main();

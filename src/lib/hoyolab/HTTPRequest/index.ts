@@ -113,7 +113,7 @@ export class HTTPRequest {
         }
 
         // If cookie is false, delete it
-        if (options?.cookie === undefined && !options?.cookie) {
+        if (options?.cookie !== undefined && !options?.cookie) {
             delete headers["Cookie"];
         }
 

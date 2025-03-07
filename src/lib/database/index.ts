@@ -33,7 +33,7 @@ export class Database {
         });
     }
 
-    async newDatabase(ACCESS_KEY: string) {
+    async getDatabase(ACCESS_KEY: string) {
         const keys = await this.fetch();
 
         if (keys[ACCESS_KEY]) {
