@@ -101,6 +101,11 @@ export class HTTPRequest {
             (<RequestInit>options).body = JSON.stringify(options.body);
         }
 
+        // If cookie is false, delete it
+        if (options?.cookie === undefined && !options?.cookie) {
+            delete headers["Cookie"];
+        }
+
         // Send the request
         const response = await fetch(URL, {
             ...(<RequestInit>options),
