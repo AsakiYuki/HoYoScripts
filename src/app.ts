@@ -1,15 +1,8 @@
-import { HTTPRequest } from "./lib/hoyolab/HTTPRequest";
+import { Database } from "./lib/database";
 import Secret from "./utils/secret";
 
-const request = new HTTPRequest(Secret.cookies[0]);
+(async () => {
+    const webhook = new Database(Secret.database.api, Secret.database.key);
 
-request
-    .fetch("https://sg-public-api.hoyolab.com/event/game_record/card/wapi/getGameRecordCard", {
-        searchParams: {
-            uid: 246916273,
-        },
-        security: true,
-    })
-    .then(v => {
-        console.log(v);
-    });
+    const test = await webhook.deleteDatabase("TEST");
+})();
