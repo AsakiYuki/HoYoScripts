@@ -1,5 +1,6 @@
 import { createHash } from "crypto";
 import { HTTPRequestInit, HTTPResponse } from "./interface";
+import { now } from "../../../utils/timer";
 
 const headers = {
     Accept: "application/json, text/plain, */*",
@@ -34,7 +35,7 @@ export class HTTPRequest {
      */
     static getDs() {
         // Get the current time in seconds
-        const t = Math.floor(Date.now() / 1000);
+        const t = now();
 
         // Generate a random string of 6 characters
         const r = Array.from(
@@ -85,7 +86,7 @@ export class HTTPRequest {
         try {
             return response.json();
         } catch (error) {
-            console.error("\0x1b[31m[ERROR]\0x1b[0m", error);
+            console.error("[ERROR]", error);
             return null;
         }
     }
@@ -98,6 +99,7 @@ export class HTTPRequest {
         // Create a new headers object with the default headers and the DS
         const headers = {
             ...this.headers,
+            ...options?.headers,
         };
 
         // Add the DS to the headers
