@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@types/node": "^22.13.8",
-    "crypto": "^1.0.1"
+    "@types/pngjs": "^6.0.5",
+    "crypto": "^1.0.1",
+    "pngjs": "^7.0.0"
   }
 }

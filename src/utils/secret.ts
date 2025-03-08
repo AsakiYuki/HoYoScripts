@@ -3,7 +3,7 @@ import fs from "fs";
 // Define the secret interface
 interface Secret {
     cookies: string[];
-    log: {
+    hoyolog: {
         api: string;
         name: string;
         avatar: string;

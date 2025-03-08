@@ -8,7 +8,7 @@ import {
 } from "./interface";
 
 export class Webhook {
-    constructor(protected url: string) {}
+    constructor(protected url: string, protected prePayload: WebhookExecute = {}) {}
 
     protected buildUrl(searchParams?: Record<string, any>, path?: string) {
         let url = this.url;
@@ -35,7 +35,10 @@ export class Webhook {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(query),
+            body: JSON.stringify({
+                ...this.prePayload,
+                ...query,
+            }),
         });
     }
 
