@@ -2,6 +2,7 @@ import { HoYoLab } from "..";
 import { Daily } from "../daily";
 import { GAME_ID } from "../getGameRecordCards";
 import { HTTPRequest } from "../HTTPRequest";
+import { Redeemtion } from "../redeemtion";
 import { ActCalender } from "./getActCalender";
 import { StarRailIndex } from "./index.interface";
 
@@ -32,6 +33,17 @@ export class StarRail {
 
     daily() {
         return new Daily(this.cookie, this.language, GAME_ID.HONKAI_STAR_RAIL, this.httpRequest);
+    }
+
+    redeem() {
+        return new Redeemtion(
+            this.cookie,
+            this.language,
+            this.roleId,
+            this.server,
+            GAME_ID.HONKAI_STAR_RAIL,
+            this.httpRequest
+        );
     }
 
     async index() {
