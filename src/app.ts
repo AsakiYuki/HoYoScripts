@@ -79,6 +79,8 @@ async function claimHSRCodes(
     const awards: string[] = [];
 
     for (const redeemInfo of activeCodes) {
+        console.log(`On redeem: ${redeemInfo.code}`);
+
         const { retcode } = (await redeemtion.redeem(redeemInfo.code))!;
 
         if (!retcode) {
@@ -119,6 +121,9 @@ async function main() {
             // Get some data
             const index = await hsr.index();
             const recordCard = await hsr.getRecordCard();
+
+            console.log("Account name:", recordCard.nickname);
+            console.log("UID:", recordCard.game_role_id);
 
             await Promise.all([
                 claimHSRDaily(hsr, index?.data!, recordCard),

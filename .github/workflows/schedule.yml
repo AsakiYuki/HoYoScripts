@@ -24,4 +24,4 @@ jobs:
                   cmd: install
 
             - name: Run
-              run: bun src.app.ts
+              run: bun src/app.ts
