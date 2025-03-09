@@ -1,0 +1,25 @@
+name: HoYoScript Schedule
+
+on:
+    schedule:
+        - cron: "0 * * * *"
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Secret
+              run: echo ${{secrets.DATA}} > secrets.json
+
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+
+            - name: Install
+              uses: borales/actions-yarn@v4
+              with:
+                  cmd: install
+
+            - name: Run
+              run: bun src.app.ts
