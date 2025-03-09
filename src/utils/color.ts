@@ -2,7 +2,7 @@ import { PNG } from "pngjs";
 
 // caculate average image color
 export async function calcAvgImgColor(image: ArrayBuffer | string) {
-    return new Promise(async (res, rej) => {
+    return new Promise<number>(async (res, rej) => {
         try {
             const img =
                 typeof image === "string" ? await fetch(image).then(v => v.arrayBuffer()) : image;
@@ -29,7 +29,7 @@ export async function calcAvgImgColor(image: ArrayBuffer | string) {
                 res(count ? ((r / count) << 16) + ((g / count) << 8) + ((b / count) << 0) : 0);
             });
         } catch (error) {
-            rej(0);
+            rej(error);
         }
     });
 }
