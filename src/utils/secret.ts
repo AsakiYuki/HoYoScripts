@@ -15,7 +15,7 @@ interface Secret {
 }
 
 // Read the secret file
-const secret: Secret = JSON.parse(fs.readFileSync("secret.json", "utf-8"));
+const secret: Secret = JSON.parse(fs.readFileSync("./../../secret.json", "utf-8"));
 
 // Export the secret
 export default secret;
