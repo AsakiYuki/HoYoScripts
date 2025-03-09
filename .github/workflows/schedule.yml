@@ -3,6 +3,8 @@ name: HoYoScript Schedule
 on:
     schedule:
         - cron: "0 * * * *"
+    push:
+        branches: main
 
 jobs:
     run:
