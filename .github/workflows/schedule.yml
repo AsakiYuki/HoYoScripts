@@ -13,8 +13,7 @@ jobs:
             - uses: actions/checkout@v4
 
             - name: Secret
-              run: echo '${{secrets.DATA}}' > secrets.json
-              run: ls
+              run: echo '${{secrets.DATA}}' > secrets.json & ls
 
             - name: Setup Bun
               uses: oven-sh/setup-bun@v2
