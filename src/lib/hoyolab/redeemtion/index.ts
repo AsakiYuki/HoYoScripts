@@ -1,4 +1,5 @@
 import { now } from "../../../utils/timer";
+import { Cookie } from "../../Cookie";
 import { GAME_ID } from "../getGameRecordCards";
 import { HTTPRequest } from "../HTTPRequest";
 import { RedeemtionCodes } from "./codes";
@@ -13,7 +14,7 @@ export class Redeemtion {
     protected api: RedeemtionAPI;
 
     constructor(
-        cookie: string,
+        cookie: Cookie,
         protected language: string = "en-us",
         protected roleId: number | string,
         protected server: string,

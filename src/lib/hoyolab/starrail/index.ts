@@ -1,4 +1,5 @@
 import { HoYoLab } from "..";
+import { Cookie } from "../../Cookie";
 import { Daily } from "../daily";
 import { GAME_ID } from "../getGameRecordCards";
 import { HTTPRequest } from "../HTTPRequest";
@@ -11,7 +12,7 @@ export class StarRail {
     private hoyolab: HoYoLab;
 
     constructor(
-        protected cookie: string,
+        protected cookie: Cookie,
         protected server: string,
         protected language: string = "en-us",
         protected roleId: number | string,

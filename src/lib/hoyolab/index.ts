@@ -1,3 +1,4 @@
+import { Cookie } from "../Cookie";
 import { HoYoLabFull } from "./full";
 import { GAME_ID, GetGameRecordCards } from "./getGameRecordCards";
 import { HTTPRequest } from "./HTTPRequest";
@@ -7,7 +8,7 @@ export class HoYoLab {
     private httpRequest: HTTPRequest;
 
     constructor(
-        protected cookie: string,
+        protected cookie: Cookie,
         protected language: string = "en-us",
         httpRequest?: HTTPRequest
     ) {
@@ -16,6 +17,15 @@ export class HoYoLab {
         } else {
             this.httpRequest = new HTTPRequest(cookie, language);
         }
+    }
+
+    async verifyToken() {
+        return await this.httpRequest.fetch(
+            "https://sg-public-api.hoyoverse.com/account/ma-passport/token/verifyCookieToken",
+            {
+                method: "POST",
+            }
+        );
     }
 
     async full() {

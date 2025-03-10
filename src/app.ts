@@ -1,3 +1,4 @@
+import { Cookie } from "./lib/Cookie";
 import { HoYoLab } from "./lib/hoyolab";
 import { GetGameRecordCards } from "./lib/hoyolab/getGameRecordCards";
 import { StarRail } from "./lib/hoyolab/starrail";
@@ -7,8 +8,10 @@ import { WebhookEmbedAuthor } from "./lib/webhook/interface";
 import { calcAvgImgColor } from "./utils/color";
 import Secret from "./utils/secret";
 
+const cookie = new Cookie(Secret.cookies[0]);
+
 // HoYoLab classes
-const hoyolab = new HoYoLab(Secret.cookies[0]);
+const hoyolab = new HoYoLab(cookie);
 
 // Discord Webhook classes
 const webhook = new Webhook(Secret.hoyolog.api, {
@@ -81,7 +84,7 @@ async function claimHSRCodes(
     for (const redeemInfo of activeCodes) {
         console.log(`On redeem: ${redeemInfo.code}`);
 
-        const { retcode } = (await redeemtion.redeem(redeemInfo.code))!;
+        const { retcode, message } = (await redeemtion.redeem(redeemInfo.code))!;
 
         if (!retcode) {
             console.log(`Redeem completed: ${redeemInfo.code}`);
@@ -90,6 +93,8 @@ async function claimHSRCodes(
                     redeemInfo.code
                 }): ${redeemInfo.rewards.join(", ")}`
             );
+        } else {
+            console.log(`${retcode}: ${message}`);
         }
 
         await wait(6000);
@@ -115,6 +120,7 @@ async function claimHSRCodes(
 
 async function main() {
     try {
+        // Get HSR Classes
         const hsr = await hoyolab.starRail("prod_official_asia");
 
         if (hsr) {

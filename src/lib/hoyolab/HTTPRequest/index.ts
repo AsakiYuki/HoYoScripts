@@ -1,6 +1,7 @@
 import { createHash } from "crypto";
 import { HTTPRequestInit, HTTPResponse } from "./interface";
 import { now } from "../../../utils/timer";
+import { Cookie } from "../../Cookie";
 
 const headers = {
     Accept: "application/json, text/plain, */*",
@@ -21,10 +22,9 @@ const headers = {
 export class HTTPRequest {
     private headers: Record<string, string>;
 
-    constructor(cookie: string, lang: string = "") {
+    constructor(protected cookie: Cookie, lang: string = "") {
         this.headers = {
             ...headers,
-            Cookie: cookie,
             "x-rpc-language": lang,
         };
     }
@@ -117,12 +117,20 @@ export class HTTPRequest {
         // If cookie is false, delete it
         if (options?.cookie !== undefined && !options?.cookie) {
             delete headers["Cookie"];
+        } else {
+            headers["Cookie"] = this.cookie.get();
         }
 
         // Send the request
-        return await fetch(URL, {
+        const response = await fetch(URL, {
             ...(<RequestInit>options),
             headers: headers,
         });
+
+        for (const cookie of response.headers.getSetCookie()) {
+            this.cookie.setCookie(cookie);
+        }
+
+        return response;
     }
 }

@@ -1,3 +1,4 @@
+import { Cookie } from "../../Cookie";
 import { GAME_ID } from "../getGameRecordCards";
 import { HTTPRequest } from "../HTTPRequest";
 import { DailyAwards } from "./awards";
@@ -18,7 +19,7 @@ export class Daily {
     protected api: DailyAPI;
 
     constructor(
-        cookie: string,
+        cookie: Cookie,
         protected language: string = "en-us",
         protected game: GAME_ID,
         httpRequest?: HTTPRequest
