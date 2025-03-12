@@ -7,6 +7,8 @@ import { Webhook } from "./lib/webhook";
 import { WebhookEmbedAuthor } from "./lib/webhook/interface";
 import { calcAvgImgColor } from "./utils/color";
 import Secret from "./utils/secret";
+import Cache from "./utils/cache";
+import { timestamp } from "./utils/timer";
 
 const cookie = new Cookie(Secret.cookies[0]);
 
@@ -63,6 +65,7 @@ async function claimHSRDaily(
                         url: award?.icon!,
                     },
                     description: `### Honkai: Star Rail - Daily checkin.\nToday daily checkin completed, Trailblazer~\n### Rewards\n- ${award?.name} x${award?.cnt}`,
+                    timestamp: timestamp(),
                 },
             ],
         });
@@ -74,18 +77,33 @@ async function claimHSRCodes(
     index: StarRailIndex,
     recordCard: GetGameRecordCards["list"][number]
 ) {
+    // redeem classes
     const redeemtion = hsr.redeem();
-    const codes = await redeemtion.fetch();
 
+    // fetch star rail active codes
+    const codes = await redeemtion.fetch();
     const activeCodes = codes.active;
 
+    // save only active codes
+    const activeRedeemedCodes = (Cache.redeemedCodes || []).filter(redeemedCode =>
+        activeCodes.find(({ code }) => code === redeemedCode)
+    );
+
+    // get new active codes
+    const newActiveCodes = activeCodes.filter(({ code }) => !activeRedeemedCodes.includes(code));
+
+    // save rewards info
     const awards: string[] = [];
 
-    for (const redeemInfo of activeCodes) {
+    // start to redeems
+    for (const redeemInfo of newActiveCodes) {
+        // log redeemtion
         console.log(`On redeem: ${redeemInfo.code}`);
 
+        // get message and reponse code
         const { retcode, message } = (await redeemtion.redeem(redeemInfo.code))!;
 
+        // if redeem complete then push notify to awards
         if (!retcode) {
             console.log(`Redeem completed: ${redeemInfo.code}`);
             awards.push(
@@ -93,13 +111,20 @@ async function claimHSRCodes(
                     redeemInfo.code
                 }): ${redeemInfo.rewards.join(", ")}`
             );
-        } else {
+        }
+        // if redeem unsuccessful then log error
+        else {
             console.log(`${retcode}: ${message}`);
         }
 
-        await wait(6000);
+        // save the code
+        activeRedeemedCodes.push(redeemInfo.code);
+
+        // await 6 seconds avoid API spam
+        if (newActiveCodes[newActiveCodes.length - 1].code !== redeemInfo.code) await wait(6000);
     }
 
+    // if at least one reward is redeemed, push the notify.
     if (awards.length) {
         webhook.execute({
             embeds: [
@@ -112,10 +137,13 @@ async function claimHSRCodes(
                         ...awards,
                     ].join("\n"),
                     color: 0xeeff54,
+                    timestamp: timestamp(),
                 },
             ],
         });
     }
+    // save all redeemed codes
+    Cache.redeemedCodes = activeRedeemedCodes;
 }
 
 async function main() {

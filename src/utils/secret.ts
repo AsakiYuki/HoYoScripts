@@ -8,10 +8,6 @@ interface Secret {
         name: string;
         avatar: string;
     };
-    database: {
-        api: string;
-        key: string;
-    };
 }
 
 // Read the secret file
