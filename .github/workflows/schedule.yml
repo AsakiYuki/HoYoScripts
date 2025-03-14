@@ -16,8 +16,8 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: cache.json
-                  key: ${{ runner.os }}-${{ github.run_id }}
-                  restore-keys: ${{ runner.os }}
+                  key: cache-${{ runner.os }}-${{ github.run_id }}
+                  restore-keys: cache-${{ runner.os }}
 
             - name: Secret
               run: echo '${{secrets.DATA}}' > secret.json
