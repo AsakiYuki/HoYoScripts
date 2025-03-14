@@ -16,7 +16,7 @@ jobs:
               uses: actions/cache@v4
               with:
                   path: cache.json
-                  key: ${{runner.os}}
+                  key: ${{ runner.os }}-user-data-${{ hashFiles('./user_data.json') }}
 
             - name: Secret
               run: echo '${{secrets.DATA}}' > secret.json
