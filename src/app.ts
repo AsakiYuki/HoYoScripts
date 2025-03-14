@@ -97,9 +97,6 @@ async function claimHSRCodes(
 
     // start to redeems
     for (const redeemInfo of newActiveCodes) {
-        // log redeemtion
-        console.log(`On redeem: ${redeemInfo.code}`);
-
         // get message and reponse code
         const { retcode, message } = (await redeemtion.redeem(redeemInfo.code))!;
 
@@ -114,7 +111,7 @@ async function claimHSRCodes(
         }
         // if redeem unsuccessful then log error
         else {
-            console.log(`${retcode}: ${message}`);
+            console.log(`Redeem failed with message '${message}' -> ${retcode}`);
         }
 
         // save the code
