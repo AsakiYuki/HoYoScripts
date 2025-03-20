@@ -84,9 +84,11 @@ export class HTTPRequest {
         const response = await this.rawFetch(url, options);
 
         try {
-            return response.json();
+            if (response.status >= 200 && response.status <= 210) {
+                return response.json();
+            } else throw "ERROR";
         } catch (error) {
-            console.error("[ERROR]", error);
+            console.error(response.status, response.statusText);
             return null;
         }
     }
@@ -126,10 +128,6 @@ export class HTTPRequest {
             ...(<RequestInit>options),
             headers: headers,
         });
-
-        for (const cookie of response.headers.getSetCookie()) {
-            this.cookie.setCookie(cookie);
-        }
 
         return response;
     }

@@ -5,10 +5,24 @@ export class Cookie {
         const value = cookie.split(";");
         const data: Map<string, any> = new Map();
 
+        const keys: string[] = [
+            "ltoken",
+            "ltoken_v2",
+            "ltuid",
+            "ltuid_v2",
+            "account_id",
+            "cookie_token",
+            "account_id_v2",
+            "account_mid_v2",
+            "cookie_token_v2",
+            "mi18nLang",
+            "ltmid_v2",
+        ];
+
         for (const cookie of value) {
             const [key, value] = cookie.split("=").map(v => v.trim());
 
-            data.set(key, decodeURIComponent(value));
+            if (keys.includes(key)) data.set(key, decodeURIComponent(value));
         }
 
         return data;

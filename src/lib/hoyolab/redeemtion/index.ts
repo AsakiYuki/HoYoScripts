@@ -1,4 +1,3 @@
-import { now } from "../../../utils/timer";
 import { Cookie } from "../../Cookie";
 import { GAME_ID } from "../getGameRecordCards";
 import { HTTPRequest } from "../HTTPRequest";
@@ -43,17 +42,15 @@ export class Redeemtion {
 
     async redeem(code: string) {
         const response = await this.httpRequest.fetch(
-            "https://public-operation-hkrpg.hoyoverse.com/common/apicdkey/api/webExchangeCdkeyRisk",
+            "https://sg-hkrpg-api.hoyolab.com/common/apicdkey/api/webExchangeCdkeyHyl",
             {
-                method: "POST",
-                body: {
-                    t: now(),
+                method: "GET",
+                searchParams: {
                     lang: this.language.split("-")[0],
                     game_biz: this.api.game,
                     uid: this.roleId,
                     region: this.server,
                     cdkey: code,
-                    platform: "4",
                 },
             }
         );
