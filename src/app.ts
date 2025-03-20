@@ -97,7 +97,7 @@ async function claimHSRCodes(
 
     // start to redeems
     for (const redeemInfo of newActiveCodes) {
-        // get message and reponse code
+        // get message and response code
         const { retcode, message } = (await redeemtion.redeem(redeemInfo.code))!;
 
         // if redeem complete then push notify to awards
@@ -118,7 +118,7 @@ async function claimHSRCodes(
         activeRedeemedCodes.push(redeemInfo.code);
 
         // await 6 seconds avoid API spam
-        if (newActiveCodes[newActiveCodes.length - 1].code !== redeemInfo.code) await wait(6000);
+        if (newActiveCodes[newActiveCodes.length - 1].code !== redeemInfo.code) await wait(6e3);
     }
 
     // if at least one reward is redeemed, push the notify.
@@ -150,8 +150,7 @@ async function main() {
 
         if (hsr) {
             // Get some data
-            const index = await hsr.index();
-            const recordCard = await hsr.getRecordCard();
+            const [index, recordCard] = await Promise.all([hsr.index(), hsr.getRecordCard()]);
 
             console.log("Account name:", recordCard.nickname);
             console.log("UID:", recordCard.game_role_id);
