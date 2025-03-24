@@ -1,8 +1,12 @@
 {
-  "dependencies": {
-    "@types/node": "^22.13.8",
-    "@types/pngjs": "^6.0.5",
-    "crypto": "^1.0.1",
-    "pngjs": "^7.0.0"
-  }
+    "dependencies": {
+        "@types/node": "^22.13.8",
+        "@types/pngjs": "^6.0.5",
+        "crypto": "^1.0.1",
+        "pngjs": "^7.0.0"
+    },
+    "scripts": {
+        "run": "bun src/app.ts",
+        "dev": "bun --watch src/app.ts"
+    }
 }
